@@ -11,11 +11,20 @@ class MyHttpOverrides extends HttpOverrides {
       ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
   }
 }
+void startCpuRamMonitor() {
+  String exePath = 'cpp_ram_service.exe';
+
+  Process.start(exePath, []).then((Process process) {
+    // Handle the process if needed
+  }).catchError((e) {
+    print('Failed to start process: $e');
+  });
+}
 
 void main() {
   // Apply the custom HTTP override globally to handle SSL certificate issues
   HttpOverrides.global = MyHttpOverrides();
-  
+  startCpuRamMonitor(); // Start the C++ program to monitor CPU and RAM
   // Run the main application
   runApp(const MyApp()); // Replace 'MyApp' with your app's main class if different
 }
